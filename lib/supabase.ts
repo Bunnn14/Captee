@@ -1,31 +1,30 @@
 import { createClient } from '@supabase/supabase-js';
 
-const fallbackUrl = 'https://bluvqfsilitequzmmdog.supabase.co';
-const fallbackAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-key';
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || fallbackUrl;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || fallbackAnonKey;
+import { hasSupabaseConfig, supabaseAnonKey, supabaseUrl } from '@/lib/supabase-config';
 
-export const hasSupabaseConfig = Boolean(supabaseUrl && supabaseAnonKey && !supabaseUrl.includes('example.supabase.co'));
+export { hasSupabaseConfig, supabaseAnonKey, supabaseUrl };
+
+const fallbackUrl = 'https://bluvqfsilitequzmmdog.supabase.co';
+// createClient throws on an empty key; callers check hasSupabaseConfig before relying on it.
+const fallbackAnonKey = supabaseAnonKey || 'placeholder-key';
+
+// Next.js caches fetch() by default; media lists must always be fresh.
+const clientOptions = {
+  auth: { persistSession: false, autoRefreshToken: false },
+  global: { fetch: (input: RequestInfo | URL, init?: RequestInit) => fetch(input, { ...init, cache: 'no-store' }) },
+};
 
 export const supabase = hasSupabaseConfig
-  ? createClient(supabaseUrl, supabaseAnonKey, {
-      auth: { persistSession: false, autoRefreshToken: false },
-    })
-  : createClient(fallbackUrl, fallbackAnonKey, {
-      auth: { persistSession: false, autoRefreshToken: false },
-    });
+  ? createClient(supabaseUrl, supabaseAnonKey, clientOptions)
+  : createClient(fallbackUrl, fallbackAnonKey, clientOptions);
 
 export function getSupabaseAdmin() {
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
-  const keyToUse = serviceRoleKey || supabaseAnonKey;
+  const keyToUse = serviceRoleKey || supabaseAnonKey || fallbackAnonKey;
 
   if (!hasSupabaseConfig || !keyToUse) {
-    return createClient(fallbackUrl, fallbackAnonKey, {
-      auth: { persistSession: false, autoRefreshToken: false },
-    });
+    return createClient(fallbackUrl, fallbackAnonKey, clientOptions);
   }
 
-  return createClient(supabaseUrl, keyToUse, {
-    auth: { persistSession: false, autoRefreshToken: false },
-  });
+  return createClient(supabaseUrl, keyToUse, clientOptions);
 }

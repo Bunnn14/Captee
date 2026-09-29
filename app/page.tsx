@@ -109,39 +109,42 @@ export default function HomePage({ searchParams }: { searchParams?: { error?: st
     <main className="mx-auto flex min-h-screen max-w-5xl flex-col justify-center px-4 py-16 sm:px-6 lg:px-8">
       <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
         <section className="space-y-6">
-          <div className="inline-flex items-center gap-2 rounded-full border border-cyan-500/30 bg-cyan-500/10 px-3 py-1 text-sm text-cyan-300">
+          <div className="chip">
             <Sparkles size={16} />
             App-less, QR-driven event memories
           </div>
           <div className="space-y-4">
-            <h1 className="text-4xl font-semibold tracking-tight sm:text-6xl">Capture every moment at your event.</h1>
-            <p className="max-w-2xl text-lg text-slate-300">
+            <h1 className="text-4xl font-semibold tracking-tight sm:text-6xl">
+              Capture every moment at{' '}
+              <span className="bg-gradient-to-r from-violet-300 via-fuchsia-300 to-violet-300 bg-clip-text text-transparent">your event.</span>
+            </h1>
+            <p className="max-w-2xl text-lg text-zinc-400">
               Captee lets guests upload photos and videos instantly by scanning a QR code or opening a link—no login, no app install, just memories.
             </p>
           </div>
           <div className="flex flex-wrap gap-3">
-            <Link href="/e/demo-event" className="rounded-full bg-cyan-500 px-4 py-2 font-medium text-slate-950 transition hover:bg-cyan-400">
+            <Link href="/e/demo-event" className="btn-primary">
               View demo guest page
             </Link>
-            <Link href="/dashboard/demo" className="rounded-full border border-slate-700 px-4 py-2 font-medium text-slate-200 transition hover:border-slate-500">
+            <Link href="/dashboard/demo" className="btn-secondary">
               Host dashboard preview
             </Link>
           </div>
         </section>
 
-        <section className="rounded-3xl border border-slate-800 bg-slate-900/70 p-6 shadow-2xl shadow-cyan-950/30">
+        <section className="card p-6 sm:p-8">
           <div className="mb-5 flex items-center gap-3">
-            <div className="rounded-2xl bg-cyan-500/15 p-3 text-cyan-400">
+            <div className="rounded-2xl bg-gradient-to-br from-violet-500/25 to-fuchsia-500/15 p-3 text-violet-200">
               <Camera size={24} />
             </div>
             <div>
               <h2 className="text-xl font-semibold">Create a new event</h2>
-              <p className="text-sm text-slate-400">Set your upload window and get a QR-ready event page.</p>
+              <p className="text-sm text-zinc-400">Set your upload window and get a QR-ready event page.</p>
             </div>
           </div>
 
           {error ? (
-            <div className="mb-4 rounded-2xl border border-amber-500/20 bg-amber-500/10 p-3 text-sm text-amber-200">
+            <div className="mb-4 rounded-2xl border border-amber-400/20 bg-amber-500/10 p-3 text-sm text-amber-200">
               <div className="flex items-start gap-2">
                 <AlertTriangle size={16} className="mt-0.5" />
                 <div>
@@ -154,24 +157,24 @@ export default function HomePage({ searchParams }: { searchParams?: { error?: st
 
           <form action={createEvent} className="space-y-4">
             <label className="block text-sm">
-              <span className="mb-1 block text-slate-300">Event name</span>
-              <input name="title" required className="w-full rounded-2xl border border-slate-700 bg-slate-950/70 px-4 py-3 outline-none ring-0" placeholder="Summer Party" />
+              <span className="mb-1.5 block text-zinc-300">Event name</span>
+              <input name="title" required className="input" placeholder="Summer Party" />
             </label>
             <label className="block text-sm">
-              <span className="mb-1 block text-slate-300">Host email</span>
-              <input name="hostEmail" type="email" required className="w-full rounded-2xl border border-slate-700 bg-slate-950/70 px-4 py-3 outline-none ring-0" placeholder="host@example.com" />
+              <span className="mb-1.5 block text-zinc-300">Host email</span>
+              <input name="hostEmail" type="email" required className="input" placeholder="host@example.com" />
             </label>
             <div className="grid gap-4 sm:grid-cols-2">
               <label className="block text-sm">
-                <span className="mb-1 block text-slate-300">Start time</span>
-                <input name="startTime" type="datetime-local" required className="w-full rounded-2xl border border-slate-700 bg-slate-950/70 px-4 py-3 outline-none ring-0" />
+                <span className="mb-1.5 block text-zinc-300">Start time</span>
+                <input name="startTime" type="datetime-local" required className="input" />
               </label>
               <label className="block text-sm">
-                <span className="mb-1 block text-slate-300">End time</span>
-                <input name="endTime" type="datetime-local" required className="w-full rounded-2xl border border-slate-700 bg-slate-950/70 px-4 py-3 outline-none ring-0" />
+                <span className="mb-1.5 block text-zinc-300">End time</span>
+                <input name="endTime" type="datetime-local" required className="input" />
               </label>
             </div>
-            <button className="w-full rounded-2xl bg-cyan-500 px-4 py-3 font-semibold text-slate-950 transition hover:bg-cyan-400">
+            <button className="btn-primary w-full py-3 text-base">
               Create event
             </button>
           </form>
