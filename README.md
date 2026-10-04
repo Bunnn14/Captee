@@ -46,13 +46,6 @@ create policy "Public delete access" on storage.objects
 for delete using (bucket_id = 'media');
 ```
 
-## Production deployment on Vercel
-
-1. Push the project to GitHub.
-2. Import the repo into Vercel.
-3. Add the environment variables from `.env.example`.
-4. Deploy.
-5. Configure a cron job to call:
 
 ```text
 https://your-app.vercel.app/api/cron/cleanup
